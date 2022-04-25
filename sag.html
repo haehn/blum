@@ -1,0 +1,62 @@
+<html>
+  <head>
+    <title>Blume3000!</title>
+    <style>
+      body { 
+        background-color:#000;
+        margin: 0;
+        padding: 0;
+        height: 100%;
+        overflow: hidden !important;  
+      }
+    </style>
+    <script type="text/javascript" src="niivue.umd.js"></script>
+    <script type="text/javascript">
+      window.onload = function() {
+
+        var data = [{
+          url: "sag.nii.gz",
+          volume: {hdr: null, img: null},
+          name: "b1",
+          intensityMin: 0, // not used yet
+          intensityMax: 100, // not used yet
+          intensityRange:[0, 100], // not used yet
+          colorMap: "gray",
+          opacity: 1,
+          visible: true,
+        }];
+
+        var nv1 = new niivue.Niivue();
+        nv1.attachTo('gl1');
+        nv1.loadVolumes(data);
+        // nv1.setClipPlane([42, 42])
+        nv1.setSliceType(nv1.sliceTypeRender);
+
+        var cmaps = nv1.colorMaps();
+ 
+        var colors = [18, 21, 27, 28, 34];
+
+        var j = 0;
+        window.onkeypress = function(e) {
+
+          if (e.code == 'Space') { 
+            j++;
+            if (j == colors.length) {
+              j = 0;
+            }
+            nv1.volumes[0].colorMap = cmaps[colors[j]];
+            nv1.updateGLVolume();
+
+          }
+
+        }
+
+      };
+    </script>
+  </head>
+  <body>
+    <div style='height:100%;width:100%;float:left;'>
+      <canvas id='gl1'></canvas>
+    </div>
+  </body>
+</html>
